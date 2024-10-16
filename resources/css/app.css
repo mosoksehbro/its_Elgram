@@ -1,0 +1,64 @@
+.profile_photo {
+    border: 5px solid #007bff; /* Border dengan warna biru */
+    border-radius: 50%; /* Membuat gambar menjadi lingkaran */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Bayangan di bawah gambar */
+    transition: transform 0.2s; /* Transisi saat hover */
+}
+
+.profile_photo:hover {
+    transform: scale(1.05); /* Membesar sedikit saat hover */
+}
+
+body {
+    font-family: 'Nunito', sans-serif;
+    height: 100vh;
+    margin: 0;
+    background: linear-gradient(135deg, #6d5b98, #8d71b6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+}
+
+.welcome-container {
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.welcome-container h1 {
+    font-size: 3.5rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    animation: fadeInDown 1s ease-out;
+}
+
+.btn-custom {
+    font-size: 1.2rem;
+    padding: 10px 25px;
+    margin: 10px;
+    border: none;
+    border-radius: 50px;
+    background-color: #fff;
+    color: #6d5b98;
+    transition: all 0.3s ease-in-out;
+}
+
+.btn-custom:hover {
+    background-color: #8d71b6;
+    color: #fff;
+    transform: scale(1.05);
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
