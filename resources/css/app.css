@@ -1,5 +1,5 @@
 .profile_photo {
-    border: 5px solid #007bff; /* Border dengan warna biru */
+    border: 5px solid #000000; /* Border dengan warna biru */
     border-radius: 50%; /* Membuat gambar menjadi lingkaran */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Bayangan di bawah gambar */
     transition: transform 0.2s; /* Transisi saat hover */
@@ -8,8 +8,31 @@
 .profile_photo:hover {
     transform: scale(1.05); /* Membesar sedikit saat hover */
 }
+.card-body img {
+    width: 120px; /* Ukuran tetap */
+    height: 120px; /* Ukuran tetap */
+    border: 5px solid transparent; /* Border transparan */
+    border-radius: 50%; /* Membuat gambar menjadi bulat */
+    background: linear-gradient(white, white), linear-gradient(90deg, #007bff, #00d4ff); /* Gradien di belakang */
+    background-clip: padding-box, border-box; /* Mengatur background */
+    position: relative; /* Mengatur posisi */
+    z-index: 1; /* Mengatur z-index */
+}
 
-body {
+.card-body img::before {
+    content: ''; /* Membuat pseudo-element */
+    position: absolute;
+    top: 0; 
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 50%; /* Membuat border bulat */
+    border: 5px solid transparent; /* Border transparan */
+    background: linear-gradient(90deg, #007bff, #00d4ff); /* Gradien border */
+    z-index: -1; /* Mengatur z-index agar di belakang */
+}
+
+/* body {
     font-family: 'Nunito', sans-serif;
     height: 100vh;
     margin: 0;
@@ -61,4 +84,4 @@ body {
         opacity: 1;
         transform: translateY(0);
     }
-}
+} */

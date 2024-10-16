@@ -27,7 +27,7 @@ class LoginController extends Controller
         // Coba login
         if (Auth::attempt($this->credentials($request))) {
             // Login berhasil, redirect
-            return redirect()->intended('/welcome');
+            return redirect()->intended('/profile');
         }
 
         // Jika gagal, beri pesan error

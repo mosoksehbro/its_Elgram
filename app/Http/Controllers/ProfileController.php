@@ -56,6 +56,14 @@ class ProfileController extends Controller
     
         
     }
+
+    public function showProfile(User $user)
+    {
+    $mediaUploads = Media::where('user_id', $user->id)->get();
+    $feedPerRow = $user->feed_per_row ?? 3; // Atau nilai default
+    return view('profile', compact('user', 'mediaUploads', 'feedPerRow'));
+    }
+
     public function settings()
     {
         // Ambil data user yang sedang login

@@ -19,7 +19,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/welcome', function () {return view('welcome');})->name('welcome');    
     Route::post('logout', function () {Auth::logout();return redirect('/');})->name('logout');
     Route::get('register', [RegisterController::class, 'showRegistrationForm'])->name('register');
-    Route::post('register', [RegisterController::class, 'register']);
+    Route::post('register', [RegisterController::class, 'register'])->name('login');
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
     Route::delete('/profile/media/{id}', [ProfileController::class, 'deleteMedia'])->name('profile.media.delete')->middleware('auth');
     Route::post('/profile/update-bio', [ProfileController::class, 'updateBio'])->name('profile.update-bio');
@@ -31,9 +31,10 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/archive/download', [ArchiveController::class, 'download'])->name('archive.download');
     // Route::get('/', function () {return view('welcome');});
     
+        
 
 });
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/welcome', [App\Http\Controllers\HomeController::class, 'index'])->name('welcome');

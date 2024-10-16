@@ -22,26 +22,25 @@
                     @endif
                 </div>
 
-            <!-- Profile Section -->
-            <div class="card shadow-sm border-0">
-                <div class="card-body text-center">
-                            @if($user->profile_photo)
-                                <img src="{{ asset('storage/' . $user->profile_photo) }}" class="img-fluid rounded-circle mb-4 border border-primary" alt="Profile Photo" width="120">
-                            @else
-                                <img src="https://via.placeholder.com/150" class="img-fluid rounded-circle border border-secondary" alt="Profile Photo">
-                            @endif
-                            <h3 class="font-weight-bold text-primary ">{{ $user->username }}</h3>
-                            <p class="text-muted">{{ $user->bio ?? 'No bio available' }}</p>
-                        
+                            <!-- Profile Section -->
+                    <div class="card shadow-sm border-0">
+                        <div class="card-body text-center">
+                                @if($user->profile_photo)
+                                    <img src="{{ asset('storage/' . $user->profile_photo) }}" class="rounded-circle mb-4 border border-primary" alt="Profile Photo" width="120" height="120">
+                                @else
+                                    <img src="https://via.placeholder.com/150" class="rounded-circle border border-secondary" alt="Profile Photo" width="120" height="120">
+                                @endif
+                                <h3 class="font-weight-bold text-primary">{{ $user->username }}</h3>
+                                <p class="text-muted">{{ $user->bio ?? 'No bio available' }}</p>
                             <!-- Edit Profile -->
-                        <div>
-                            <!-- <a href="{{ route('profile.settings') }}" class="btn btn-outline-primary btn-lg">Edit Profile</a> -->
-                            <a href="{{ route('profile.settings') }}" class="btn btn-outline-primary btn-sm">
-                                <i class="fas fa-user-edit"></i> Edit Profile
-                            </a> 
+                            <div>
+                                <!-- <a href="{{ route('profile.settings') }}" class="btn btn-outline-primary btn-lg">Edit Profile</a> -->
+                                <a href="{{ route('profile.settings') }}" class="btn btn-outline-primary btn-sm">
+                                    <i class="fas fa-user-edit"></i> Edit Profile
+                                </a> 
+                            </div>
                         </div>
-                </div>
-            </div>
+                    </div>
                             
                     
 
@@ -87,53 +86,48 @@
                 @endphp
                 <div class="card">
                     <div class="card-header">Your Uploads</div>
-                    <div class="card-body">
-                        <div class="row">
-                            @foreach($mediaUploads as $media)
-                                <div class="col-md-4 mb-3">
-                                    <div class="card">
-                                        @if(in_array($media->file_type, ['jpg', 'jpeg', 'png']))
-                                            <img src="{{ asset('storage/' . $media->file_path) }}" class="card-img-top" alt="media">
-                                        @elseif(in_array($media->file_type, ['mp4', 'mov']))
-                                            <video controls width="100%">
-                                                <source src="{{ asset('storage/' . $media->file_path) }}" type="video/{{ $media->file_type }}">
-                                                Your browser does not support the video tag.
-                                            </video>
-                                        @endif
-                                        <div class="card-body">
-                                            <p>{{ $media->caption }}</p>
-                                                            
-                                        <!-- Dropdown untuk menghapus media dan mengedit caption -->
-                                        <form action="{{ route('profile.media.delete', $media->id) }}" method="POST" style="display:inline;" id="delete-form-{{ $media->id }}">
-                                            @csrf
-                                            @method('DELETE')
-                                            <div class="input-group mb-3">
-                                            <select class="form-select w-100" name="action" onchange="handleActionChange(this, '{{ $media->id }}');">
-                                                <option value="">Actions</option>
-                                                <option value="edit">Edit Caption</option>
-                                                <option value="delete">Delete</option>
-                                            </select>
-                                        </div>
-                                        </form>
+                        <div class="card-body">
+                            <div class="row">
+                                @foreach($mediaUploads as $media)
+                                    <div class="col-md-{{ 12 / $feedPerRow }} mb-3"> <!-- Dinamis per row -->
+                                        <div class="card shadow-sm" style="height: 100%;"> <!-- Card height tetap -->
+                                            @if(in_array($media->file_type, ['jpg', 'jpeg', 'png']))
+                                                <img src="{{ asset('storage/' . $media->file_path) }}" class="card-img-top" alt="media">
+                                            @elseif(in_array($media->file_type, ['mp4', 'mov']))
+                                                <video controls width="100%">
+                                                    <source src="{{ asset('storage/' . $media->file_path) }}" type="video/{{ $media->file_type }}">
+                                                    Your browser does not support the video tag.
+                                                </video>
+                                            @endif
+                                            <div class="card-body d-flex flex-column"> 
+                                                <p class="card-text">{{ $media->caption }}</p>
+                                            <form action="{{ route('profile.media.delete', $media->id) }}" method="POST" style="display:inline;" id="delete-form-{{ $media->id }}">
+                                                @csrf
+                                                @method('DELETE')
+                                                <div class="input-group mb-3">
+                                                    <select class="form-select w-100" name="action" onchange="handleActionChange(this, '{{ $media->id }}');">
+                                                        <option value="">Actions</option>
+                                                        <option value="edit">Edit Caption</option>
+                                                        <option value="delete">Delete</option>
+                                                    </select>
+                                                </div>
+                                            </form>
                                         
                                          <!-- Input untuk mengedit caption -->
-                                         <form action="{{ route('profile.media.update', $media->id) }}" method="POST" id="edit-caption-form-{{ $media->id }}" style="display:none;" class="row g-3 mt-3 w-120">
-                                            @csrf
-                                            @method('PUT')
-                                            <div class="col-md-12">
-                                                <input type="text" name="caption" value="{{ $media->caption }}" class="form-control" required>
-                                            </div>
-                                            <!-- Tombol submit memanggil fungsi JavaScript untuk menampilkan modal konfirmasi -->
-                                            <div class="col-md-12 mt-2">
-                                                <button type="button" class="btn btn-primary" onclick="confirmEdit('{{ $media->id }}')">Submit</button>
-                                            </div>
-                                        </form>
-                                </div>
-                            @endforeach
+                                         <form action="{{ route('profile.media.update', $media->id) }}" method="POST" id="edit-caption-form-{{ $media->id }}" style="display:none;" class="mt-2">
+                                        @csrf
+                                        @method('PUT')
+                                        <div class="col-md-13">
+                                            <input type="text" name="caption" value="{{ $media->caption }}" class="form-control" required>
+                                        </div>
+                                        <div class="col-md-13 mt-2">
+                                            <button type="button" class="btn btn-primary" onclick="confirmEdit('{{ $media->id }}')">Submit</button>
+                                        </div>
+                            </form>
                         </div>
                     </div>
                 </div>
-            </div>
+            @endforeach
         </div>
     </div>
 </div>
@@ -184,4 +178,6 @@ function confirmEdit(mediaId) {
     };
 }
 </script>
+
+<!--  -->
 @endsection
