@@ -158,9 +158,14 @@ function handleActionChange(selectElement, mediaId) {
 
     if (selectedAction === 'delete') {
         // Tampilkan modal konfirmasi untuk delete
+        console.log("test");
+        
         document.getElementById('modalMessage').innerText = 'Are you sure you want to delete this media?';
         const confirmModal = new bootstrap.Modal(document.getElementById('confirmActionModal'));
         confirmModal.show();
+        document.getElementById('confirmActionBtn').onclick = function () {
+        document.getElementById(`delete-form-${mediaId}`).submit();
+    };
     } else if (selectedAction === 'edit') {
         // Tampilkan form edit caption tanpa modal
         document.getElementById(`edit-caption-form-${mediaId}`).style.display = 'block';

@@ -13,7 +13,7 @@ class LoginController extends Controller
         // Method untuk menampilkan form login
     public function showLoginForm()
         {
-            return view('auth.login'); // Pastikan view auth/login.blade.php ada
+            return view('auth.login');  
         }
         
     public function login(Request $request)
@@ -51,7 +51,7 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
-    // Tambahkan fungsi logout jika belum ada
+    //  fungsi logout 
     public function logout(Request $request)
     {
         Auth::logout(); // Log out the user

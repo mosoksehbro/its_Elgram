@@ -123,7 +123,7 @@ class ProfileController extends Controller
 
         return redirect()->back()->with('error', 'Media not found or you do not have permission to delete it.');
     }
-
+     
 
         public function updateMedia(Request $request, $id)
     {
