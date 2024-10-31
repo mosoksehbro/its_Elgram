@@ -33,12 +33,12 @@ class ProfileController extends Controller
 
         return back()->with('success', 'Bio updated successfully.');
     }
-   
+
     public function uploadMedia(Request $request)
     {
         // Validasi file upload
         $request->validate([
-            'file' => 'required|mimes:jpg,jpeg,png,mp4,mov|max:153600',
+            'file' => 'required|mimes:jpg,jpeg,png, mov, mp4|max:153600',
             'caption' => 'nullable|string|max:1000',
         ]);
 
@@ -53,22 +53,20 @@ class ProfileController extends Controller
         $mediaUpload->save();
 
         return back()->with('success', 'File uploaded successfully.');
-    
-        
     }
 
     public function showProfile(User $user)
     {
-    $mediaUploads = Media::where('user_id', $user->id)->get();
-    $feedPerRow = $user->feed_per_row ?? 3; // Atau nilai default
-    return view('profile', compact('user', 'mediaUploads', 'feedPerRow'));
+        $mediaUploads = Media::where('user_id', $user->id)->get();
+        $feedPerRow = $user->feed_per_row ?? 3; // Atau nilai default
+        return view('profile', compact('user', 'mediaUploads', 'feedPerRow'));
     }
 
     public function settings()
     {
         // Ambil data user yang sedang login
         $user = Auth::user();
-        
+
         // Kembalikan view dengan data user
         return view('profile.settings', compact('user'));
     }
@@ -81,32 +79,32 @@ class ProfileController extends Controller
             'bio' => 'nullable|string|max:1000',
             'feed_per_row' => 'required|integer|min:1|max:16000',
             'profile_photo' => 'nullable|image|mimes:jpg,jpeg,png|max:5120', // Maksimum 5MB
-            
+
         ]);
-    
+
         // Update data user
         $user->username = $request->input('username');
         $user->bio = $request->input('bio');
         $user->feed_per_row = $request->input('feed_per_row');
-    
+
         // Handle upload foto profil
         if ($request->hasFile('profile_photo')) {
             // Hapus foto profil lama jika ada
             if ($user->profile_photo) {
                 Storage::disk('public')->delete($user->profile_photo);
             }
-    
+
             $profilePhoto = $request->file('profile_photo');
             $path = $profilePhoto->store('profile_photos', 'public');
             $user->profile_photo = $path;
         }
-    
+
         $user->save();
-    
+
         return back()->with('success', 'Settings updated successfully.');
     }
 
-        public function deleteMedia($id)
+    public function deleteMedia($id)
     {
         $mediaUpload = MediaUpload::where('id', $id)->where('user_id', Auth::id())->first();
 
@@ -123,9 +121,9 @@ class ProfileController extends Controller
 
         return redirect()->back()->with('error', 'Media not found or you do not have permission to delete it.');
     }
-     
 
-        public function updateMedia(Request $request, $id)
+
+    public function updateMedia(Request $request, $id)
     {
         $request->validate([
             'caption' => 'required|string|max:1000',
@@ -144,5 +142,4 @@ class ProfileController extends Controller
 
         return redirect()->back()->with('error', 'Media not found or you do not have permission to edit it.');
     }
-
 }
